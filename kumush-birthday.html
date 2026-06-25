@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kumushim uchun 💕</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --rose: #c0606a;
+    --rose-light: #f7e8ea;
+    --rose-dark: #8a3a42;
+    --gold: #c9a96e;
+    --cream: #fdf6f0;
+    --dark: #2a1a1c;
+    --text: #4a2a2e;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Lato', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ===== PETALS ===== */
+  .petal-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .petal {
+    position: absolute;
+    top: -30px;
+    font-size: 18px;
+    animation: fall linear infinite;
+    opacity: 0.7;
+  }
+
+  @keyframes fall {
+    0% { transform: translateY(-30px) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ===== HERO ===== */
+  #hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    position: relative;
+    background: linear-gradient(160deg, #fff5f6 0%, #fdf6f0 50%, #fff0f5 100%);
+  }
+
+  .hero-rose {
+    font-size: 60px;
+    animation: pulse 2s ease-in-out infinite;
+    display: block;
+    margin-bottom: 24px;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+  }
+
+  .hero-subtitle {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    font-size: 13px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--rose);
+    margin-bottom: 16px;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(56px, 10vw, 96px);
+    font-weight: 600;
+    color: var(--rose-dark);
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .hero-tagline {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--rose);
+    margin-bottom: 40px;
+  }
+
+  .scroll-hint {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--rose);
+    opacity: 0.6;
+    animation: bounce 2s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(6px); }
+  }
+
+  /* ===== SECTION BASE ===== */
+  section {
+    position: relative;
+    z-index: 1;
+  }
+
+  .section-inner {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 80px 24px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 5vw, 42px);
+    color: var(--rose-dark);
+    margin-bottom: 40px;
+    line-height: 1.3;
+  }
+
+  /* ===== PHOTOS ===== */
+  #photos {
+    background: var(--rose-dark);
+  }
+
+  #photos .section-title {
+    color: #fff;
+  }
+
+  #photos .section-label {
+    color: var(--gold);
+  }
+
+  .slideshow {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    border-radius: 16px;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .slide {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.8s ease;
+    padding: 30px;
+    text-align: center;
+  }
+
+  .slide.active { opacity: 1; }
+
+  .slide-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+  }
+
+  .photo-frame {
+    width: 200px;
+    height: 200px;
+    border-radius: 12px;
+    border: 2px dashed rgba(255,255,255,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    background: rgba(255,255,255,0.05);
+    color: rgba(255,255,255,0.5);
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .photo-frame span { font-size: 36px; }
+
+  .slide-caption {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255,255,255,0.8);
+    margin-top: 16px;
+  }
+
+  /* Real image slides */
+  .slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+    position: absolute;
+    inset: 0;
+  }
+
+  .slide .caption-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 40px 20px 20px;
+    background: linear-gradient(transparent, rgba(0,0,0,0.6));
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+  }
+
+  .slide-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+  }
+
+  .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+    cursor: pointer;
+    transition: all 0.3s;
+    border: none;
+    padding: 0;
+  }
+
+  .dot.active {
+    background: var(--gold);
+    transform: scale(1.3);
+  }
+
+  /* Photo upload hint */
+  .photo-hint {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 24px;
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  /* ===== STORY ===== */
+  #story {
+    background: #fff;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px; top: 8px; bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--rose-light), var(--rose), var(--rose-light));
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 48px;
+    opacity: 0;
+    transform: translateX(20px);
+    transition: all 0.6s ease;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -28px;
+    top: 4px;
+    width: 16px; height: 16px;
+    border-radius: 50%;
+    background: var(--rose);
+    border: 3px solid var(--cream);
+    box-shadow: 0 0 0 2px var(--rose);
+  }
+
+  .timeline-date {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .timeline-event {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--rose-dark);
+    margin-bottom: 6px;
+  }
+
+  .timeline-desc {
+    font-size: 14px;
+    color: #888;
+    line-height: 1.6;
+  }
+
+  /* ===== LETTER ===== */
+  #letter {
+    background: linear-gradient(135deg, #fff5f6 0%, #fdf6f0 100%);
+  }
+
+  .letter-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 48px 40px;
+    box-shadow: 0 20px 60px rgba(192, 96, 106, 0.08);
+    border: 1px solid var(--rose-light);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .letter-card::before {
+    content: '❝';
+    position: absolute;
+    top: 20px; left: 24px;
+    font-size: 80px;
+    color: var(--rose-light);
+    font-family: 'Playfair Display', serif;
+    line-height: 1;
+  }
+
+  .letter-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(15px, 2vw, 18px);
+    line-height: 1.9;
+    color: var(--text);
+    font-style: italic;
+    position: relative;
+    z-index: 1;
+  }
+
+  .letter-signature {
+    margin-top: 32px;
+    text-align: right;
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    color: var(--rose);
+  }
+
+  .letter-signature::before {
+    content: '— ';
+  }
+
+  /* ===== WISHES ===== */
+  #wishes {
+    background: var(--rose-dark);
+    text-align: center;
+  }
+
+  #wishes .section-title { color: #fff; }
+  #wishes .section-label { color: var(--gold); }
+
+  .wishes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-top: 8px;
+  }
+
+  .wish-card {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px;
+    padding: 28px 20px;
+    transition: transform 0.3s, background 0.3s;
+  }
+
+  .wish-card:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.12);
+  }
+
+  .wish-icon {
+    font-size: 32px;
+    display: block;
+    margin-bottom: 12px;
+  }
+
+  .wish-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.8);
+    line-height: 1.6;
+  }
+
+  /* ===== COUNTDOWN ===== */
+  #countdown {
+    background: #fff;
+    text-align: center;
+  }
+
+  .counter-display {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin: 32px 0;
+  }
+
+  .counter-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 7vw, 60px);
+    font-weight: 600;
+    color: var(--rose);
+    line-height: 1;
+    display: block;
+  }
+
+  .counter-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #bbb;
+    display: block;
+    margin-top: 4px;
+  }
+
+  .counter-unit {
+    text-align: center;
+  }
+
+  .counter-sep {
+    font-size: 40px;
+    color: var(--rose-light);
+    margin-bottom: 20px;
+  }
+
+  .birthday-msg {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(22px, 4vw, 32px);
+    color: var(--rose-dark);
+    font-style: italic;
+  }
+
+  .confetti-btn {
+    margin-top: 32px;
+    background: var(--rose);
+    color: #fff;
+    border: none;
+    padding: 14px 36px;
+    border-radius: 40px;
+    font-family: 'Lato', sans-serif;
+    font-size: 14px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+
+  .confetti-btn:hover {
+    background: var(--rose-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(192,96,106,0.35);
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    background: var(--dark);
+    color: rgba(255,255,255,0.4);
+    text-align: center;
+    padding: 40px 20px;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  footer strong {
+    color: var(--rose);
+    font-weight: 400;
+  }
+
+  /* ===== ANIMATIONS ===== */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: all 0.7s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 480px) {
+    .letter-card { padding: 32px 20px; }
+    .section-inner { padding: 60px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Falling petals -->
+<div class="petal-container" id="petals"></div>
+
+<!-- ===== HERO ===== -->
+<section id="hero">
+  <span class="hero-rose">🌹</span>
+  <p class="hero-subtitle">Sening maxsus kuning</p>
+  <h1 class="hero-name">Kumushim</h1>
+  <p class="hero-tagline">Tug'ilgan kuning bilan, azizim</p>
+  <p class="scroll-hint">↓ &nbsp; pastga suring &nbsp; ↓</p>
+</section>
+
+<!-- ===== PHOTOS ===== -->
+<section id="photos">
+  <div class="section-inner">
+    <span class="section-label">Mening ko'zlarimda</span>
+    <h2 class="section-title">Sen — eng go'zal manzaram</h2>
+
+    <div class="slideshow" id="slideshow">
+      <!-- Siz bu yerga rasmlarni qo'shishingiz mumkin -->
+      <!-- Rasm qo'shish uchun: <slide> elementlarini to'ldiring -->
+
+      <div class="slide active">
+        <div class="slide-placeholder">
+          <div class="photo-frame">
+            <span>📷</span>
+            <p>Rasmingiz</p>
+          </div>
+          <p class="slide-caption">Birinchi rasm...</p>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-placeholder">
+          <div class="photo-frame">
+            <span>📷</span>
+            <p>Rasmingiz</p>
+          </div>
+          <p class="slide-caption">Ikkinchi rasm...</p>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-placeholder">
+          <div class="photo-frame">
+            <span>📷</span>
+            <p>Rasmingiz</p>
+          </div>
+          <p class="slide-caption">Uchinchi rasm...</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="slide-dots" id="dots">
+      <button class="dot active" onclick="goToSlide(0)"></button>
+      <button class="dot" onclick="goToSlide(1)"></button>
+      <button class="dot" onclick="goToSlide(2)"></button>
+    </div>
+
+    <p class="photo-hint">✨ Rasmlarni almashtirish uchun menga yuboring — men qo'shib beraman</p>
+  </div>
+</section>
+
+<!-- ===== STORY ===== -->
+<section id="story">
+  <div class="section-inner">
+    <span class="section-label fade-in">Bizning hikoyamiz</span>
+    <h2 class="section-title fade-in">Ikki yurak, bir yo'l</h2>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">4 iyul 2024</p>
+        <h3 class="timeline-event">Muhabbatimizning boshi 💕</h3>
+        <p class="timeline-desc">O'sha kuni ikki yurak bir-birini topdi. Hayotim shu kundan boshlab ma'no kasb etdi.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">16 noyabr 2025</p>
+        <h3 class="timeline-event">Bozordagi uchrashuv 🌸</h3>
+        <p class="timeline-desc">Seni ko'rganimda yuragim yana bir bor to'lib ketdi. Oddiy bozor — lekin men uchun eng yaxshi xotira.</p>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <p class="timeline-date">29 iyun 2026</p>
+        <h3 class="timeline-event">Sening maxsus kuning 🎂</h3>
+        <p class="timeline-desc">Bugun sen yangi yoshni qarshi olasan. Men esa seni sevintirishni xohlayman — har doim, har lahzada.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== LETTER ===== -->
+<section id="letter">
+  <div class="section-inner">
+    <span class="section-label fade-in">Yuragimdan</span>
+    <h2 class="section-title fade-in">Sening uchun yozilgan maktub</h2>
+
+    <div class="letter-card fade-in">
+      <p class="letter-text">
+        Kumushim, mana bugun yana bir yoshni qarshi olding. To'g'ri chiroyli gapirishga usta emasman. Ba'zan seni hafa qilib qo'yaman, ba'zida seni eshitmay qo'yaman. Hatto qanchadir vaqt o'zimni sendan nafratlanadigan kabi tutdim. Lekin har qanday holatda ham sani judayam qattiq yaxshi ko'raman.
+        <br><br>
+        Bilasanmi, sen umrim davomida uchratgan eng katta omadimsan. Sendagi mehr, sadoqat va qalbingdagi sevgi men uchun bu dunyodagi hamma narsa. O'tgan vaqt ichida shularni tushunib yetdim. Sensiz yashay olmayman.
+        <br><br>
+        Ha, ba'zi vaqtlar senga erkalik qilaman. Hammasi seni qizg'onganim­dan, seni chindan yaxshi ko'rganim­dan. Sen faqat manikilgingni, vaqtingni faqat men bilan o'tkazishingni, qandaydir muammoyingiz bo'lsa menga aytishingni, sen uchun borimni berishga tayyorligimni bilishingni hohlardim.
+        <br><br>
+        Har qanday vaziyatda sani qo'llab quvvatlayman, xato qilsang birga to'g'irlaymiz, har doim sen tomonda bo'laman. Sani juda juda ko'p sevaman.
+      </p>
+      <p class="letter-signature">Sening sevgiling</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== WISHES ===== -->
+<section id="wishes">
+  <div class="section-inner" style="text-align:center;">
+    <span class="section-label fade-in">Senga tilaklar</span>
+    <h2 class="section-title fade-in">Baxtli tug'ilgan kun, azizim</h2>
+
+    <div class="wishes-grid">
+      <div class="wish-card fade-in">
+        <span class="wish-icon">💫</span>
+        <p class="wish-text">Har bir orzuying amalga oshsin, har bir tileging ijobat topsin</p>
+      </div>
+      <div class="wish-card fade-in">
+        <span class="wish-icon">🌸</span>
+        <p class="wish-text">Hayoting doim bahor kabi gullayvesin, yuragingda doim quvonch bo'lsin</p>
+      </div>
+      <div class="wish-card fade-in">
+        <span class="wish-icon">❤️</span>
+        <p class="wish-text">Seni sevadigan, qadrlaydigan insonlar har doim yoningda bo'lsin</p>
+      </div>
+      <div class="wish-card fade-in">
+        <span class="wish-icon">✨</span>
+        <p class="wish-text">Yangi yoshing omad, sog'lik va cheksiz baxt bilan to'lsin</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== COUNTDOWN ===== -->
+<section id="countdown">
+  <div class="section-inner">
+    <span class="section-label fade-in" style="text-align:center; display:block;">Bugun</span>
+    <h2 class="section-title fade-in" style="text-align:center;">Sen mening borimsan 🌹</h2>
+
+    <div id="timer-content" class="fade-in">
+      <div class="counter-display" id="counter">
+        <div class="counter-unit">
+          <span class="counter-num" id="days">0</span>
+          <span class="counter-label">kun</span>
+        </div>
+        <span class="counter-sep">·</span>
+        <div class="counter-unit">
+          <span class="counter-num" id="hours">0</span>
+          <span class="counter-label">soat</span>
+        </div>
+        <span class="counter-sep">·</span>
+        <div class="counter-unit">
+          <span class="counter-num" id="mins">0</span>
+          <span class="counter-label">daqiqa</span>
+        </div>
+        <span class="counter-sep">·</span>
+        <div class="counter-unit">
+          <span class="counter-num" id="secs">0</span>
+          <span class="counter-label">soniya</span>
+        </div>
+      </div>
+      <p id="timer-label" style="text-align:center; color:#bbb; font-size:13px; letter-spacing:2px; text-transform:uppercase;"></p>
+    </div>
+
+    <div style="text-align:center; margin-top: 40px;">
+      <button class="confetti-btn" onclick="launchConfetti()">🎉 Nishonlaymiz!</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <p>Faqat seni uchun yaratildi &nbsp;·&nbsp; <strong>Sening sevgiling</strong> tomonidan 💕</p>
+  <p style="margin-top:8px; font-size:11px;">29 iyun 2026</p>
+</footer>
+
+<script>
+// ===== PETALS =====
+(function() {
+  const container = document.getElementById('petals');
+  const emojis = ['🌸', '🌹', '🌷', '💕', '✨'];
+  for (let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.className = 'petal';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    el.style.animationDelay = (Math.random() * 10) + 's';
+    el.style.fontSize = (Math.random() * 12 + 10) + 'px';
+    container.appendChild(el);
+  }
+})();
+
+// ===== SLIDESHOW =====
+let currentSlide = 0;
+const slides = document.querySelectorAll('.slide');
+const dots = document.querySelectorAll('.dot');
+
+function goToSlide(n) {
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = n;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+}
+
+setInterval(() => {
+  goToSlide((currentSlide + 1) % slides.length);
+}, 4000);
+
+// ===== SCROLL ANIMATIONS =====
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.15 });
+
+document.querySelectorAll('.fade-in, .timeline-item').forEach(el => observer.observe(el));
+
+// ===== COUNTDOWN =====
+function updateTimer() {
+  const now = new Date();
+  const birthday = new Date('2026-06-29T00:00:00');
+  const diff = birthday - now;
+
+  const timerLabel = document.getElementById('timer-label');
+  const counterEl = document.getElementById('counter');
+
+  if (diff <= 0) {
+    // It's her birthday!
+    counterEl.innerHTML = '<p class="birthday-msg">🎂 Bugun sening kunin, Kumushim! 🎂</p>';
+    timerLabel.textContent = '';
+    return;
+  }
+
+  const days = Math.floor(diff / 86400000);
+  const hours = Math.floor((diff % 86400000) / 3600000);
+  const mins = Math.floor((diff % 3600000) / 60000);
+  const secs = Math.floor((diff % 60000) / 1000);
+
+  document.getElementById('days').textContent = String(days).padStart(2, '0');
+  document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+  document.getElementById('mins').textContent = String(mins).padStart(2, '0');
+  document.getElementById('secs').textContent = String(secs).padStart(2, '0');
+  timerLabel.textContent = 'tug\'ilgan kuningga qoldi';
+}
+
+updateTimer();
+setInterval(updateTimer, 1000);
+
+// ===== CONFETTI =====
+function launchConfetti() {
+  const colors = ['#c0606a', '#c9a96e', '#f7c5c8', '#fff', '#8a3a42'];
+  for (let i = 0; i < 60; i++) {
+    const el = document.createElement('div');
+    el.style.cssText = `
+      position:fixed;
+      top:${Math.random() * 40}%;
+      left:${Math.random() * 100}%;
+      width:${Math.random() * 8 + 4}px;
+      height:${Math.random() * 8 + 4}px;
+      background:${colors[Math.floor(Math.random() * colors.length)]};
+      border-radius:${Math.random() > 0.5 ? '50%' : '2px'};
+      z-index:9999;
+      pointer-events:none;
+      animation: confettiFall ${Math.random() * 2 + 1.5}s ease forwards;
+    `;
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 3500);
+  }
+
+  if (!document.getElementById('confetti-keyframes')) {
+    const style = document.createElement('style');
+    style.id = 'confetti-keyframes';
+    style.textContent = `
+      @keyframes confettiFall {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(80vh) rotate(720deg); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+}
+</script>
+</body>
+</html>
